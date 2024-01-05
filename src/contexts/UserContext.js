@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 
 export const UserContext = createContext(null); // Placeholder
@@ -6,6 +6,34 @@ export const UserContext = createContext(null); // Placeholder
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null); // Holds user data
   const [isAuthenticated, setIsAuthenticated] = useState(false); // Tracks authentication status
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = Cookies.get('token');
+      if (token) {
+        try {
+          const response = await fetch(`${process.env.REACT_APP_API_URL}/user/me`, {
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error("Fetch user data unsuccessful");
+          }
+
+          const userData = await response.json();
+          setUser(userData);
+          setIsAuthenticated(true);
+        } catch (error) {
+          console.error("Error when fetching users data:", error);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const login = async (credentials) => {
     try {
@@ -49,3 +77,5 @@ export const UserProvider = ({ children }) => {
     </UserContext.Provider>
   );
 };
+
+export default UserProvider;
