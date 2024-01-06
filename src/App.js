@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { UserProvider } from './contexts/UserContext';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 import HomePage from './pages/HomePage';
 import CalendarPage from './pages/CalendarPage';
 import LoginModal from './components/LoginModal';
-import './App.css';
 
 function App() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
