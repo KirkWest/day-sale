@@ -1,0 +1,9 @@
+.footer {
+  /* Custom styles for the footer */
+}
+
+.footer a {
+  color: black; /* or any color you prefer */
+  text-decoration: none;
+  /* More styles */
+}

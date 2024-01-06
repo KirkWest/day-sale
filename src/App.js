@@ -6,25 +6,27 @@ import './App.css';
 import HomePage from './pages/HomePage';
 import CalendarPage from './pages/CalendarPage';
 import LoginModal from './components/LoginModal';
+import Header from './components/header/Header.jsx'
 
 function App() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
+  const handleLoginClick = () => {
+    setIsLoginModalOpen(true);
+  };
+
   return (
     <UserProvider>
       <Router>
-        <div>
-          <button onClick={() => setIsLoginModalOpen(true)}>Login</button>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/calendar" element={<CalendarPage />} />
-          </Routes>
-          <div>Hello World</div>
-        </div>
+        <Header onLoginClick={handleLoginClick} />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/calendar" element={<CalendarPage />} />
+        </Routes>
         <LoginModal
           isOpen={isLoginModalOpen}
           onRequestClose={() => setIsLoginModalOpen(false)}
-          />
+        />
       </Router>
     </UserProvider>
   );
