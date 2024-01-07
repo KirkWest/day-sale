@@ -8,5 +8,11 @@ body {
   background-image: url('/public/images/preschool.jpg');
   background-size: cover;
   background-position: center;
-  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+main.flex-fill {
+  flex-grow: 1;
+  padding: 20px 0;
 }

@@ -1,0 +1,14 @@
+.main-content {
+  background-color: white;
+  color: black;
+  padding: 20px;
+  margin: 20px auto;
+  text-align: center;
+  font-size: 35px;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    font-size: 20px;
+  }
+}

@@ -6,7 +6,8 @@ import './App.css';
 import HomePage from './pages/HomePage';
 import CalendarPage from './pages/CalendarPage';
 import LoginModal from './components/LoginModal';
-import Header from './components/header/Header.jsx'
+import Header from './components/header/Header.jsx';
+import Footer from './components/footer/Footer.jsx';
 
 function App() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -19,10 +20,13 @@ function App() {
     <UserProvider>
       <Router>
         <Header onLoginClick={handleLoginClick} />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/calendar" element={<CalendarPage />} />
-        </Routes>
+        <main>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/calendar" element={<CalendarPage />} />
+          </Routes>
+        </main>
+        <Footer />
         <LoginModal
           isOpen={isLoginModalOpen}
           onRequestClose={() => setIsLoginModalOpen(false)}

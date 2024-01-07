@@ -17,8 +17,8 @@ const Header = ({ onLoginClick }) => {
           className="logo"
         />
       </Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse is="me-auto mx-auto">
+      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+      <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="me-auto">
           {isHomePage
             ? <Nav.Link href="#calendar">Calendar</Nav.Link>
