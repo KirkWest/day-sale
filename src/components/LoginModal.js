@@ -1,32 +1,33 @@
 import React, { useState, useContext } from 'react';
 import ReactModal from 'react-modal';
 import UserContext from '../contexts/UserContext';
+import GlobalStateContext from '../contexts/GlobalStateContext';
 
 // using react-modal to render our login modal
-const LoginModal = ({ isOpen, onRequestClose }) => {
+const LoginModal = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
-  // this is to access the login function from UserContext
   const { login } = useContext(UserContext);
+  const { isLoginModalOpen, setIsLoginModalOpen } = useContext(GlobalStateContext);
+  const [error, setError] = useState(null);
 
   // Handles the submission of our login form and calls the login function
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setError(null); // this will reset error when retrying login
     try {
       await login({ username, password });
-      onRequestClose(); // this will close the modal after loggin in
+      setIsLoginModalOpen(false);
     } catch (error) {
-      // login error handling
-      console.error('Login failed:', error);
+      setError('Your login was unsuccessful, check your username and password and try again.')
     }
   };
 
   // login modal with fields and submit button
   return (
     <ReactModal
-      isOpen={isOpen}
-      onRequestClose={onRequestClose}
+      isOpen={isLoginModalOpen}
+      onRequestClose={() => setIsLoginModalOpen(false)}
       contentLabel="Login"
     >
       <form onSubmit={handleSubmit}>
@@ -44,6 +45,7 @@ const LoginModal = ({ isOpen, onRequestClose }) => {
           placeholder="Password"
           required
         />
+        {error && <div className="error-message">{error}</div>}
         <button type="submit">Login</button>
       </form>
     </ReactModal>

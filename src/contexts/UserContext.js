@@ -1,19 +1,20 @@
-import { createContext, useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import GlobalStateContext from './GlobalStateContext';
 
 // Provides context for user authentication and logic
 // as well as login and logout functions
-const UserContext = createContext(null); // Placeholder
+const UserContext = createContext(null);
 
 // UserProvider is our component wrapper for areas that need UserContext
 export const UserProvider = ({ children }) => {
   // Tracks user authentication
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { setIsLoginModalOpen } = useContext(GlobalStateContext);
 
   // uses effect hook to check if there is a existing authenticaiton token
   useEffect(() => {
-    const token = Cookies.get('token');
-    setIsAuthenticated(!!token); // if token present will set to isAuthenticated
+    const token = localStorage.getItem('token');
+    setIsAuthenticated(!!token); // !! chnanges the response to a boolean insterad of fetching the token
   }, []);
 
   // Authenticates user on login
@@ -34,13 +35,12 @@ export const UserProvider = ({ children }) => {
       // Extracts the token from our response
       const { token } = await response.json();
 
-      // Stores token in a cookie
-      Cookies.set('token', token, {
-        expires: 7,
-        secure: true
-      });
-
+      // this will store the token in local storage
+      localStorage.setItem('token', token);
       setIsAuthenticated(true);
+      
+      // closes the modal if logged in
+      setIsLoginModalOpen(false);
     } catch (error) {
       // handles errors in logging in
       console.error("Login unsuccessful:", error);
@@ -49,7 +49,8 @@ export const UserProvider = ({ children }) => {
 
   // logout function, clears authentication token
   const logout = () => {
-    Cookies.remove('token');
+    //removes the token from local storage
+    localStorage.removeItem('token');
     setIsAuthenticated(false);
   };
 
