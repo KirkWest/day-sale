@@ -5,6 +5,8 @@ import App from './App';
 import ReactModal from 'react-modal';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+
 
 
 // sets the root element for the modal to be accessed
