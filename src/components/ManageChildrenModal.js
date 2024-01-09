@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactModal from 'react-modal';
 
 const ManageChildrenModal = ({isOpen, onRequestClose, childrenNames, onRemoveChild, onAddChild, date }) => {
+  const[newChildName, setNewChildName] = useState('');
+
+  const handleAdd = () => {
+    onAddChild(date, newChildName);
+    setNewChildName('');
+  }
   return (
     <ReactModal isOpen={isOpen} onRequestClose={onRequestClose}>
       <ul>
@@ -12,7 +18,13 @@ const ManageChildrenModal = ({isOpen, onRequestClose, childrenNames, onRemoveChi
           </li>
         ))}
       </ul>
-      <button onClick={() => onAddChild(date)}>Add Child</button>
+      <input
+        type="text"
+        value={newChildName}
+        onChange={(event) => setNewChildName(event.target.value)}
+        placeholder="Add new child here"
+      />
+      <button onClick={handleAdd}>Add Child</button>
     </ReactModal>
   );
 };
