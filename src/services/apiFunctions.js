@@ -4,7 +4,7 @@ const fetchWithToken = async (url, options = {}) => {
   const token = localStorage.getItem('token');
 
   // fetch request
-  const response = await fetch(url, {
+  let response = await fetch(url, {
     ...options,
     headers: {
       ...options.headers,
@@ -14,8 +14,30 @@ const fetchWithToken = async (url, options = {}) => {
 
   // removes token from local storage if expired
   if (response.status === 401) {
-    localStorage.removeItem('token');
-    window.dispatchEvent(new Event('authenticationRequired'));
+    const refreshToken = localStorage.getItem('refreshToken');
+    const refreshResponse = await fetch('http://localhost:3000/auth/refresh', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refreshToken }),
+    });
+
+    if (refreshResponse.ok) {
+      const {newToken} = await refreshResponse.json();
+      localStorage.setItem('token', newToken);
+
+      response = await fetch(url, {
+        ...options,
+        headers: {
+          ...options.headers,
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+    } else {
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
+      // re opens the login modal
+      window.dispatchEvent(new CustomEvent('openLoginModal'));
+    }
   }
 
   return response;

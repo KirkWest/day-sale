@@ -14,8 +14,23 @@ export const UserProvider = ({ children }) => {
   // uses effect hook to check if there is a existing authenticaiton token
   useEffect(() => {
     const token = localStorage.getItem('token');
-    setIsAuthenticated(!!token); // !! chnanges the response to a boolean insterad of fetching the token
+    setIsAuthenticated(!!token); // !! changes the response to a boolean instead of fetching the token and sets to true
   }, []);
+
+  useEffect(() => {
+    // this is to handle the open login modal event upon token expiring
+    const handleOpenLoginModal = () => {
+      setIsLoginModalOpen(true);
+    };
+
+    // listener for the custom event openLoginModal
+    window.addEventListener('openLoginModal', handleOpenLoginModal);
+
+    // removes event listener
+    return () => {
+      window.removeEventListener('openLoginModal', handleOpenLoginModal);
+    };
+  }, []); // the empty array makes sure this runs only once on mount
 
   // Authenticates user on login
   const login = async (credentials) => {
@@ -38,7 +53,7 @@ export const UserProvider = ({ children }) => {
       // this will store the token in local storage
       localStorage.setItem('token', token);
       setIsAuthenticated(true);
-      
+
       // closes the modal if logged in
       setIsLoginModalOpen(false);
     } catch (error) {
