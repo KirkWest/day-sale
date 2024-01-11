@@ -1,0 +1,27 @@
+.email-modal {
+  background-color: white;
+  z-index: 9999;
+}
+
+.email-form {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.email-form input[type="text"],
+.email-form input[type="email"],
+.email-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.send-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}

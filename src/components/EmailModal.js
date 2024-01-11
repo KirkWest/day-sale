@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ReactModal from 'react-modal';
+import './EmailModal.css';
 
 const SendEmailModal = ({ isOpen, onRequestClose, onSendEmail, eventType, clickedDate }) => {
   const [emailDetails, setEmailDetails] = useState({
@@ -21,8 +22,8 @@ const SendEmailModal = ({ isOpen, onRequestClose, onSendEmail, eventType, clicke
   };
 
   return (
-    <ReactModal isOpen={isOpen} onRequestClose={onRequestClose}>
-      <form onSubmit={handleSubmit}>
+    <ReactModal isOpen={isOpen} onRequestClose={onRequestClose} className="email-modal">
+      <form onSubmit={handleSubmit} className="email-form">
         <input
           type="text"
           name="name"
@@ -46,7 +47,7 @@ const SendEmailModal = ({ isOpen, onRequestClose, onSendEmail, eventType, clicke
           placeholder="Please put in your childs name here along with any other relevant information"
           required
         />
-        <button type="submit">Send Email</button>
+        <button type="submit" className="send-button">Send Email</button>
       </form>
     </ReactModal>
   );
