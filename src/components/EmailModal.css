@@ -1,13 +1,13 @@
 .email-modal {
   background-color: white;
   z-index: 9999;
+  position: relative;
 }
 
 .email-form {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }
 
 .email-form input[type="text"],
