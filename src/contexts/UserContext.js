@@ -30,7 +30,7 @@ export const UserProvider = ({ children }) => {
     return () => {
       window.removeEventListener('openLoginModal', handleOpenLoginModal);
     };
-  }, []); // the empty array makes sure this runs only once on mount
+  }, [setIsLoginModalOpen]);
 
   // Authenticates user on login
   const login = async (credentials) => {

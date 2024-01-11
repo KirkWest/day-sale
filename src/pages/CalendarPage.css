@@ -1,0 +1,32 @@
+
+.my-calendar {
+  background-color: rgba(255, 255, 255, 0.9); /* White with some transparency */
+  /* or use a solid color: background-color: white; */
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.my-calendar .rbc-header,
+.my-calendar .rbc-row-content {
+  background-color: transparent;
+}
+
+.custom-day-cell {
+  position: relative;
+  height: 100%;
+}
+
+.sell-button {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 4px); 
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 2px 5px;
+  text-align: center;
+  border-radius: 4px;
+  margin: 0 2px;
+}

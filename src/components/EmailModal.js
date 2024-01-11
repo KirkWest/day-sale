@@ -46,7 +46,7 @@ const SendEmailModal = ({ isOpen, onRequestClose, onSendEmail, eventType, clicke
           placeholder="Please put in your childs name here along with any other relevant information"
           required
         />
-        <button type="submit">Sebd Email</button>
+        <button type="submit">Send Email</button>
       </form>
     </ReactModal>
   );
