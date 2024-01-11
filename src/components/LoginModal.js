@@ -9,17 +9,18 @@ const LoginModal = () => {
   const [password, setPassword] = useState('');
   const { login } = useContext(UserContext);
   const { isLoginModalOpen, setIsLoginModalOpen } = useContext(GlobalStateContext);
-  const [error, setError] = useState(null);
+  const [loginResult, setLoginResult] = useState(null);
 
   // Handles the submission of our login form and calls the login function
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError(null); // this will reset error when retrying login
+    setLoginResult(null); 
     try {
       await login({ username, password });
       setIsLoginModalOpen(false);
+      setLoginResult('success')
     } catch (error) {
-      setError('Your login was unsuccessful, check your username and password and try again.')
+      setLoginResult('failed')
     }
   };
 
@@ -45,7 +46,8 @@ const LoginModal = () => {
           placeholder="Password"
           required
         />
-        {error && <div className="error-message">{error}</div>}
+        {loginResult === 'success' && <div className="success-message">Login Successful</div>}
+        {loginResult === 'failed' && <div className="error-message">Login Failed. Check your username/password and try again.</div>}
         <button type="submit">Login</button>
       </form>
     </ReactModal>

@@ -22,6 +22,7 @@ const CalendarPage = () => {
     fetchEvents();
   }, []);
   
+  // this should fetch any events(children and the date as well in database)
   const fetchEvents = async () => {
     const response = await fetchWithToken('process.env.REACT_APP_API_URL/calendar/events');
     if (response.ok) {
@@ -43,6 +44,7 @@ const CalendarPage = () => {
     }
   };
   
+  // this adds in the sell button to each individual cell of the big calendar
   const CustomDayCellSell = ({ children, value }) => {
     return (
       <div className="rbc-day-bg custom-day-cell">
