@@ -23,7 +23,7 @@ function App() {
               <Route path="/calendar" element={<CalendarPage />} />
             </Routes>
           </main>
-          <Footer />
+          {window.location.pathname === '/' && <Footer />}
           <LoginModal />
         </Router>
       </UserProvider>

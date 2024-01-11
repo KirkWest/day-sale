@@ -1,10 +1,19 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faFacebook } from '@fortawesome/free-brands-svg-icons';
 import './Footer.css';
 
 const Footer = () => {
+  const location = useLocation();
+
+  // had issues with footer overlapping calendar, this will remove footer
+  // on CalendarPage to fix this issue.
+  if (location.pathname !== '/') {
+    return null;
+  }
+
   return (
     <footer className="footer">
       <Container>
