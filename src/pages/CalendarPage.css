@@ -1,7 +1,6 @@
-
+/* sets calendar to a slightly see through look */
 .my-calendar {
-  background-color: rgba(255, 255, 255, 0.9); /* White with some transparency */
-  /* or use a solid color: background-color: white; */
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 8px;
   padding: 10px;
 }
