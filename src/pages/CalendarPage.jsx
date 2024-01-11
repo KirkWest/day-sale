@@ -23,7 +23,7 @@ const CalendarPage = () => {
   }, []);
   
   const fetchEvents = async () => {
-    const response = await fetchWithToken('http://localhost:3000/calendar/events');
+    const response = await fetchWithToken('process.env.REACT_APP_API_URL/calendar/events');
     if (response.ok) {
       const data = await response.json();
       console.log("Fetched Events:", data);
