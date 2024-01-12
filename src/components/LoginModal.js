@@ -14,11 +14,14 @@ const LoginModal = () => {
   // Handles the submission of our login form and calls the login function
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoginResult(null); 
+    setLoginResult(null);
     try {
       await login({ username, password });
-      setIsLoginModalOpen(false);
-      setLoginResult('success')
+      setLoginResult('success');
+      // added a timeout to close the modal after 3 seconds to see the success message
+      setTimeout(() => {
+        setIsLoginModalOpen(false);
+      }, 3000);
     } catch (error) {
       setLoginResult('failed')
     }

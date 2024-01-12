@@ -44,7 +44,7 @@ export const UserProvider = ({ children }) => {
       });
 
       if (!response.ok) {
-        throw new Error('Login Unsuccessful');
+        throw new Error(`Login failed, status: ${response.status}`);
       }
 
       // Extracts the token from our response
@@ -54,11 +54,13 @@ export const UserProvider = ({ children }) => {
       localStorage.setItem('token', token);
       setIsAuthenticated(true);
 
-      // closes the modal if logged in
-      setIsLoginModalOpen(false);
+      return response;
+
     } catch (error) {
       // handles errors in logging in
       console.error("Login unsuccessful:", error);
+
+      throw error;
     }
   };
 
