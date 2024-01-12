@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import ReactModal from 'react-modal';
+import { addCalendarChild } from '../services/apiFunctions';
 
-const AddChildModal = ({ isOpen, onRequestClose, date, refreshEvents, onAddChild }) => {
+const AddChildModal = ({ isOpen, onRequestClose, date, refreshEvents }) => {
   const [childName, setChildName] = useState('');
   const[error, setError] = useState('');
 
@@ -14,10 +15,10 @@ const AddChildModal = ({ isOpen, onRequestClose, date, refreshEvents, onAddChild
       return;
     }
 
-    if (onAddChild) {
-      await onAddChild(date, childName);
-    }
+    // uses our addcalendarchild api function from apiFunctions.js
+    await addCalendarChild(date, childName);
 
+    setChildName('');
     refreshEvents(); // this should refresh so the app registers the new database information
     onRequestClose();
   };
@@ -29,7 +30,10 @@ const AddChildModal = ({ isOpen, onRequestClose, date, refreshEvents, onAddChild
         <input
           type="text"
           value={childName}
-          onChange={(event) => setChildName(event.target.value)}
+          onChange={(event) => {
+            setChildName(event.target.value);
+            setError('');
+          }}
           placeholder="child's name here"
           required
         />
