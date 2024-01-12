@@ -4,7 +4,7 @@ import moment from 'moment';
 import UserContext from '../contexts/UserContext';
 import fetchWithToken from '../services/apiFunctions';
 import AddChildModal from '../components/AddChildModal';
-// import ManageChildrenModal from '../components/ManageChildrenModal';
+import ManageChildrenModal from '../components/ManageChildrenModal';
 import SendEmailModal from '../components/EmailModal';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './CalendarPage.css';
@@ -15,6 +15,7 @@ const CalendarPage = () => {
   const [events, setEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [isAddChildModalOpen, setIsAddChildModalOpen] = useState(false);
+  const [isManageChildrenModalOpen, setIsManageChildrenModalOpen] = useState(false);
   const [isSendEmailModalOpen, setIsSendEmailModalOpen] = useState(false);
   const { isAuthenticated } = useContext(UserContext);
 
@@ -22,7 +23,7 @@ const CalendarPage = () => {
     fetchEvents();
   }, []);
   
-  // this should fetch any events(children and the date as well in database)
+  // this will fetch any events children and the date as well in database)
   const fetchEvents = async () => {
     const response = await fetchWithToken('process.env.REACT_APP_API_URL/calendar/events');
     if (response.ok) {
@@ -43,12 +44,29 @@ const CalendarPage = () => {
       setIsSendEmailModalOpen(true);
     }
   };
+
+  // handles our buy button click, if auth eventForDate will find corrosponding dates in DB
+  const handleBuyClick = (date) => {
+    setSelectedDate(date);
+    if (isAuthenticated) {
+      const eventForDate = events.find(event => moment(event.start).isSame(date, "day"));
+      setSelectedEvent(eventForDate); // stores our retrieved data
+      setIsManageChildrenModalOpen(true);
+    } else {
+      setIsSendEmailModalOpen(true);
+    }
+  }
   
   // this adds in the sell button to each individual cell of the big calendar
+  // as well as a buy button for any day that has a corresponding date is our database
   const CustomDayCellSell = ({ children, value }) => {
+    const showBuyButton = hasDateInDatabase(value);
     return (
       <div className="rbc-day-bg custom-day-cell">
         {children}
+        {showBuyButton && (
+          <button onClick={() => handleBuyClick(value)} className="buy-button">Buy</button>
+        )}
         <button onClick={() => handleSellClick(value)} className="sell-button">Sell</button>
       </div>
     );
@@ -73,15 +91,15 @@ const CalendarPage = () => {
         onRequestClose={() => setIsAddChildModalOpen(false)}
         date={selectedDate}
       />
-{/* 
+
       <ManageChildrenModal
-        isOpen={isManageChilrenModalOpen}
-        onRequestClose={closeManageChildrenModal}
+        isOpen={isManageChildrenModalOpen}
+        onRequestClose={() => setIsManageChildrenModalOpen(false)}
         childrenNames={selectedEvent ? selectedEvent.childNames : []}
-        onRemoveChild={handleRemoveChild}
-        onAddChild={handleAddChild}
-        date={selectedEvent ? selectedEvent.date : null}
-      /> */}
+        onRemoveChild={}
+        onAddChild={}
+        date={selectedDate}
+      />
 
       <SendEmailModal
         isOpen={isSendEmailModalOpen}
@@ -93,3 +111,8 @@ const CalendarPage = () => {
 };
 
 export default CalendarPage;
+
+
+// finish off manageChildrenModal render, test out fetch and manage of children with 
+// buy button and also adding children with sell button. Finish setting up the Email
+// system and test.

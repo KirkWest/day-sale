@@ -1,18 +1,31 @@
 import React, { useState } from 'react';
 import ReactModal from 'react-modal';
 
-const AddChildModal = ({ isOpen, onRequestClose, onAddChild, date }) => {
+const AddChildModal = ({ isOpen, onRequestClose, date, refreshEvents, onAddChild }) => {
   const [childName, setChildName] = useState('');
+  const[error, setError] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    onAddChild(date, childName);
+
+    // added in error handling for submitting an empty field
+    if (!childName.trim()) {
+      setError("The name cannot be empty");
+      return;
+    }
+
+    if (onAddChild) {
+      await onAddChild(date, childName);
+    }
+
+    refreshEvents(); // this should refresh so the app registers the new database information
     onRequestClose();
   };
 
   return (
     <ReactModal isOpen={isOpen} onRequestClose={onRequestClose}>
       <form onSubmit={handleSubmit}>
+        {error && <div className="error-message">{error}</div>}
         <input
           type="text"
           value={childName}
@@ -20,7 +33,7 @@ const AddChildModal = ({ isOpen, onRequestClose, onAddChild, date }) => {
           placeholder="child's name here"
           required
         />
-        <button type="submit">Add Child</button>
+        <button onClick="submit">Add Child</button>
       </form>
     </ReactModal>
   );
