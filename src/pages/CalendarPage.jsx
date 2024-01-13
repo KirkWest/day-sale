@@ -14,6 +14,7 @@ const localizer = momentLocalizer(moment);
 const CalendarPage = () => {
   const [events, setEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isAddChildModalOpen, setIsAddChildModalOpen] = useState(false);
   const [isManageChildrenModalOpen, setIsManageChildrenModalOpen] = useState(false);
@@ -26,15 +27,21 @@ const CalendarPage = () => {
   
   // this will fetch any events children and the date as well in database)
   const fetchEvents = async () => {
+    setIsLoading(true);
     const response = await fetchWithToken(`${process.env.REACT_APP_API_URL}/calendar/events`);
     // if response is ok this should set the calendar events(buy buttons)
     if (response.ok) {
       const data = await response.json();
       console.log("Fetched Events:", data);
-      setEvents(data.map(event => ({...event, start: new Date(event.date), end: new Date(event.date)})));
+      setEvents(data.map(event => ({...event,
+        start: new Date(event.date),
+        end: new Date(event.date),
+        childrenNames: event.childNames || []
+      })));
     } else {
       console.error('Error fetching events');
     }
+    setIsLoading(false);
   };
 
   const refreshEvents = async () => {
@@ -50,6 +57,11 @@ const CalendarPage = () => {
       setIsSendEmailModalOpen(true);
     }
   };
+
+  useEffect(() => {
+    const eventForDate = events.find(event => moment(event.start).isSame(selectedDate, "day"));
+    setSelectedEvent(eventForDate); // 
+  }, [events, selectedDate])
 
   // handles our buy button click, if auth eventForDate will find corrosponding dates in DB
   const handleBuyClick = (date) => {
@@ -99,6 +111,7 @@ const CalendarPage = () => {
       />
 
       <AddChildModal
+        isLoading={isLoading}
         isOpen={isAddChildModalOpen}
         onRequestClose={() => setIsAddChildModalOpen(false)}
         date={selectedDate}
@@ -106,6 +119,7 @@ const CalendarPage = () => {
       />
 
       <ManageChildrenModal
+        isLoading={isLoading}
         isOpen={isManageChildrenModalOpen}
         onRequestClose={() => setIsManageChildrenModalOpen(false)}
         childrenNames={selectedEvent ? selectedEvent.childNames : []}

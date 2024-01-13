@@ -1,4 +1,4 @@
-.login-modal-format {
+.add-child-format {
   background-color: white;
   z-index: 9999;
   position: relative;
@@ -7,22 +7,22 @@
   margin: 20px auto;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  padding: 20px;
 }
 
-.login-form-format {
+.add-form-format {
+  padding: 20px;
   display: flex;
   flex-direction: column;
 }
 
-.login-form-input {
+.add-form-input {
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
-.login-submit-button {
+.add-submit-button {
   background-color: #007bff;
   color: white;
   border: none;
@@ -31,30 +31,24 @@
   margin-top: 10px;
 }
 
-.login-success-message {
-  color: green;
-  margin-top: 10px;
-  text-align: center;
-}
-
-.login-error-message {
-  color: red;
-  margin-top: 10px;
+.add-error-message {
+  color: #ff6b6b;
+  margin-bottom: 10px;
   text-align: center;
 }
 
 @media (max-width: 600px) {
-  .login-modal-format {
+  .add-child-format {
     width: 90%;
     max-width: none;
     margin: 10px auto;
   }
 
-  .login-form-format {
+  .add-form-format {
     padding: 15px;
   }
 
-  .login-form-input, .login-submit-button {
+  .add-form-input, .add-submit-button {
     padding: 8px 15px;
   }
 }

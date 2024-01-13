@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import ReactModal from 'react-modal';
 import { addCalendarChild } from '../services/apiFunctions';
+import './AddChildModal.css';
 
-const AddChildModal = ({ isOpen, onRequestClose, date, refreshEvents }) => {
+const AddChildModal = ({ isLoading, isOpen, onRequestClose, date, refreshEvents }) => {
   const [childName, setChildName] = useState('');
   const[error, setError] = useState('');
 
@@ -23,13 +24,13 @@ const AddChildModal = ({ isOpen, onRequestClose, date, refreshEvents }) => {
     onRequestClose();
   };
 
-  console.log(handleSubmit);
   return (
-    <ReactModal isOpen={isOpen} onRequestClose={onRequestClose}>
-      <form onSubmit={handleSubmit}>
-        {error && <div className="error-message">{error}</div>}
+    <ReactModal className="add-child-format" isOpen={isOpen} onRequestClose={onRequestClose}>
+      <form className="add-form-format" onSubmit={handleSubmit}>
+        {error && <div className="add-error-message">{error}</div>}
         <input
           type="text"
+          className="add-form-input"
           value={childName}
           onChange={(event) => {
             setChildName(event.target.value);
@@ -38,7 +39,7 @@ const AddChildModal = ({ isOpen, onRequestClose, date, refreshEvents }) => {
           placeholder="child's name here"
           required
         />
-        <button type="submit">Add Child</button>
+        <button type="submit" className="add-submit-button" disabled={isLoading}>{isLoading ? "Loading ..." : "Add Child"}</button>
       </form>
     </ReactModal>
   );

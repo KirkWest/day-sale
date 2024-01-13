@@ -30,13 +30,15 @@ const LoginModal = () => {
   // login modal with fields and submit button
   return (
     <ReactModal
+      className="Login-modal-format"
       isOpen={isLoginModalOpen}
       onRequestClose={() => setIsLoginModalOpen(false)}
       contentLabel="Login"
     >
-      <form onSubmit={handleSubmit}>
+      <form className="login-form-format" onSubmit={handleSubmit}>
         <input
           type="text"
+          className="login-form-input"
           value={username}
           onChange={(event) => setUsername(event.target.value)}
           placeholder="Username"
@@ -44,14 +46,15 @@ const LoginModal = () => {
         />
         <input
           type="password"
+          className="login-form-input"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
           placeholder="Password"
           required
         />
-        {loginResult === 'success' && <div className="success-message">Login Successful</div>}
-        {loginResult === 'failed' && <div className="error-message">Login Failed. Check your username/password and try again.</div>}
-        <button type="submit">Login</button>
+        {loginResult === 'success' && <div className="login-success-message">Login Successful</div>}
+        {loginResult === 'failed' && <div className="login-error-message">Login Failed. Check your username/password and try again.</div>}
+        <button type="submit" className="login-submit-button">Login</button>
       </form>
     </ReactModal>
   );

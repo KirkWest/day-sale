@@ -16,6 +16,7 @@ const SendEmailModal = ({ isOpen, onRequestClose, onSendEmail, eventType, clicke
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    // when submitting this should add the date of the clicked button to the message
     const updatedMessage = `Date: ${clickedDate}\n\n${emailDetails.message}`;
     onSendEmail({ ...emailDetails, message: updatedMessage });
     onRequestClose();
@@ -45,10 +46,10 @@ const SendEmailModal = ({ isOpen, onRequestClose, onSendEmail, eventType, clicke
             name="message"
             value={emailDetails.message}
             onChange={handleInputChange}
-            placeholder="Please put in your childs name here along with any other relevant information"
+            placeholder="Please put in your childs name here along with any other relevant information."
             required
           />
-          <button type="submit" className="send-button">Send Email</button>
+          <button type="submit" className="email-send-button">Send Email</button>
         </form>
       </div>
     </ReactModal>

@@ -1,0 +1,103 @@
+.manage-child-format {
+  background-color: white;
+  z-index: 9999;
+  position: relative;
+  width: 80%;
+  max-width: 400px;
+  margin: 20px auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  opacity: 1;
+}
+
+.manage-form-format {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.manage-form-input {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.manage-submit-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.manage-error-message {
+  color: #ff6b6b;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.child-name-list {
+  list-style: none;
+  padding: 20px 0px;
+  margin: 0 20px;
+}
+
+.child-name-individual {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+}
+
+.child-name-individual span {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.manage-remove-button {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+
+@media (max-width: 600px) {
+  .manage-child-format {
+    width: 90%;
+    max-width: none;
+    margin: 10px auto;
+  }
+
+  .manage-form-format {
+    padding: 15px;
+  }
+
+  .manage-form-input, .manage-submit-button {
+    padding: 8px 15px;
+  }
+}
+
+.loader {
+  border: 10px solid #f3f3f3;
+  border-top: 10px solid #3498db;
+  border-radius: 50%;
+  height: 100%;
+  width: 16px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} 
+
