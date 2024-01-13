@@ -13,7 +13,7 @@ export const UserProvider = ({ children }) => {
 
   // uses effect hook to check if there is a existing authenticaiton token
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    let token = sessionStorage.getItem('token');
     setIsAuthenticated(!!token); // !! changes the response to a boolean instead of fetching the token and sets to true
   }, []);
 
@@ -51,7 +51,7 @@ export const UserProvider = ({ children }) => {
       const { token } = await response.json();
 
       // this will store the token in local storage
-      localStorage.setItem('token', token);
+      sessionStorage.setItem('token', token);
       setIsAuthenticated(true);
 
       return response;
@@ -67,7 +67,7 @@ export const UserProvider = ({ children }) => {
   // logout function, clears authentication token
   const logout = () => {
     //removes the token from local storage
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     setIsAuthenticated(false);
   };
 
