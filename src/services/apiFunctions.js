@@ -3,7 +3,7 @@ const fetchWithToken = async (url, options = {}) => {
   // retrieves our stored token from local storage
   const token = localStorage.getItem('token');
 
-  // fetch request
+  // fetch header authorisation
   let response = await fetch(url, {
     ...options,
     headers: {
@@ -15,7 +15,7 @@ const fetchWithToken = async (url, options = {}) => {
   // removes token from local storage if expired
   if (response.status === 401) {
     const refreshToken = localStorage.getItem('refreshToken');
-    const refreshResponse = await fetch('process.env.REACT_APP_API_URL/auth/refresh', {
+    const refreshResponse = await fetch(`${process.env.REACT_APP_API_URL}/auth/refresh`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ refreshToken }),
@@ -23,6 +23,7 @@ const fetchWithToken = async (url, options = {}) => {
 
     if (refreshResponse.ok) {
       const {newToken} = await refreshResponse.json();
+      // stores new token in local storage
       localStorage.setItem('token', newToken);
 
       response = await fetch(url, {
@@ -33,6 +34,7 @@ const fetchWithToken = async (url, options = {}) => {
         },
       });
     } else {
+      // removes token from local storage if response not ok
       localStorage.removeItem('token');
       localStorage.removeItem('refreshToken');
       // re opens the login modal

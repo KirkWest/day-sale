@@ -5,7 +5,7 @@ import GlobalStateContext from '../../contexts/GlobalStateContext';
 import './Header.css';
 
 const Header = () => {
-  // Checks id the current route is teh homepage for the calendar/home link toggle
+  // Checks if the current route is the homepage for the calendar/home link toggle
   const location = useLocation();
   const isHomePage = location.pathname === '/';
   const { setIsLoginModalOpen } = useContext(GlobalStateContext);
