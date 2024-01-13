@@ -14,6 +14,7 @@ const localizer = momentLocalizer(moment);
 const CalendarPage = () => {
   const [events, setEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [isAddChildModalOpen, setIsAddChildModalOpen] = useState(false);
   const [isManageChildrenModalOpen, setIsManageChildrenModalOpen] = useState(false);
   const [isSendEmailModalOpen, setIsSendEmailModalOpen] = useState(false);
@@ -25,7 +26,8 @@ const CalendarPage = () => {
   
   // this will fetch any events children and the date as well in database)
   const fetchEvents = async () => {
-    const response = await fetchWithToken('process.env.REACT_APP_API_URL/calendar/events');
+    const response = await fetchWithToken(`${process.env.REACT_APP_API_URL}/calendar/events`);
+    // if response is ok this should set the calendar events(buy buttons)
     if (response.ok) {
       const data = await response.json();
       console.log("Fetched Events:", data);
@@ -35,7 +37,11 @@ const CalendarPage = () => {
     }
   };
 
-  // this will handle the sell button click
+  const refreshEvents = async () => {
+    await fetchEvents(); // this will refresh the calendar events upon updating in modals
+  }
+
+  // this will handle the sell button click with authentication
   const handleSellClick = (date) => {
     setSelectedDate(date);
     if (isAuthenticated) {
@@ -55,7 +61,13 @@ const CalendarPage = () => {
     } else {
       setIsSendEmailModalOpen(true);
     }
-  }
+  };
+
+  // this function checks for the date in database
+  const hasDateInDatabase = (date) => {
+    const momentDate = moment(date);
+    return events.some(event => moment(event.start).isSame(momentDate, 'day'));
+  };
   
   // this adds in the sell button to each individual cell of the big calendar
   // as well as a buy button for any day that has a corresponding date is our database
@@ -90,15 +102,15 @@ const CalendarPage = () => {
         isOpen={isAddChildModalOpen}
         onRequestClose={() => setIsAddChildModalOpen(false)}
         date={selectedDate}
+        refreshEvents={refreshEvents} // need this to pass refreshEvents
       />
 
       <ManageChildrenModal
         isOpen={isManageChildrenModalOpen}
         onRequestClose={() => setIsManageChildrenModalOpen(false)}
         childrenNames={selectedEvent ? selectedEvent.childNames : []}
-        onRemoveChild={}
-        onAddChild={}
         date={selectedDate}
+        refreshEvents={refreshEvents} // passing refreshEvents again
       />
 
       <SendEmailModal

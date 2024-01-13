@@ -23,6 +23,7 @@ const AddChildModal = ({ isOpen, onRequestClose, date, refreshEvents }) => {
     onRequestClose();
   };
 
+  console.log(handleSubmit);
   return (
     <ReactModal isOpen={isOpen} onRequestClose={onRequestClose}>
       <form onSubmit={handleSubmit}>
@@ -37,7 +38,7 @@ const AddChildModal = ({ isOpen, onRequestClose, date, refreshEvents }) => {
           placeholder="child's name here"
           required
         />
-        <button onClick="submit">Add Child</button>
+        <button type="submit">Add Child</button>
       </form>
     </ReactModal>
   );
