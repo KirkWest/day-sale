@@ -45,7 +45,7 @@ const fetchWithToken = async (url, options = {}) => {
 
 // api function to add children to the calendar
 export const addCalendarChild = async (date, childName) => {
-  return await fetchWithToken('process.env.REACT_APP_API_URL/calendar/manageChildNames', {
+  return await fetchWithToken(`${process.env.REACT_APP_API_URL}/calendar/manageChildNames`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ date, childName, action: 'add' }),
@@ -54,7 +54,7 @@ export const addCalendarChild = async (date, childName) => {
 
 // api function to remove child from calendar
 export const removeCalendarChild = async (date, childName) => {
-  return await fetchWithToken('process.env.REACT_APP_API_URL/calendar/manageChildNames', {
+  return await fetchWithToken(`${process.env.REACT_APP_API_URL}/calendar/manageChildNames`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ date, childName, action: 'remove' }),
