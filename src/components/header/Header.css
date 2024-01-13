@@ -36,6 +36,7 @@
 
   .header .navbar-collapse {
     position: absolute;
+    z-index: 999999;
     top: 100%;
     right: 0;
     left: auto;

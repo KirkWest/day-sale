@@ -25,7 +25,11 @@ const AddChildModal = ({ isLoading, isOpen, onRequestClose, date, refreshEvents 
   };
 
   return (
-    <ReactModal className="add-child-format" isOpen={isOpen} onRequestClose={onRequestClose}>
+    <ReactModal
+    className="add-child-format"
+    isOpen={isOpen}
+    onRequestClose={onRequestClose}
+    >
       <form className="add-form-format" onSubmit={handleSubmit}>
         {error && <div className="add-error-message">{error}</div>}
         <input

@@ -1,7 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import ReactModal from 'react-modal';
 import UserContext from '../contexts/UserContext';
 import GlobalStateContext from '../contexts/GlobalStateContext';
+import './LoginModal.css';
 
 // using react-modal to render our login modal
 const LoginModal = () => {
@@ -10,6 +11,21 @@ const LoginModal = () => {
   const { login } = useContext(UserContext);
   const { isLoginModalOpen, setIsLoginModalOpen } = useContext(GlobalStateContext);
   const [loginResult, setLoginResult] = useState(null);
+  const [timeoutId, setTimeoutId] = useState(null);
+
+  // resets all login states when login state changes
+  useEffect(() => {
+    if (!isLoginModalOpen) {
+      // Reset states when the modal is closed
+      setLoginResult(null);
+      setUsername('');
+      setPassword('');
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        setTimeoutId(null);
+      }
+    };
+  }, [isLoginModalOpen, timeoutId]);
 
   // Handles the submission of our login form and calls the login function
   const handleSubmit = async (event) => {
@@ -19,20 +35,33 @@ const LoginModal = () => {
       await login({ username, password });
       setLoginResult('success');
       // added a timeout to close the modal after 3 seconds to see the success message
-      setTimeout(() => {
+      const id = setTimeout(() => {
         setIsLoginModalOpen(false);
-      }, 3000);
+      }, 2000);
+      setTimeoutId(id);
     } catch (error) {
-      setLoginResult('failed')
+      setLoginResult('failed');
+      if (timeoutId) clearTimeout(timeoutId);
     }
   };
+
+    // This resets all fields when modal is closed
+    const handleModalClose = () => {
+      setIsLoginModalOpen(false);
+      setLoginResult(null);
+      setUsername('');
+      setPassword('');
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
+    };
 
   // login modal with fields and submit button
   return (
     <ReactModal
-      className="Login-modal-format"
+      className="login-modal-format"
       isOpen={isLoginModalOpen}
-      onRequestClose={() => setIsLoginModalOpen(false)}
+      onRequestClose={handleModalClose}
       contentLabel="Login"
     >
       <form className="login-form-format" onSubmit={handleSubmit}>
