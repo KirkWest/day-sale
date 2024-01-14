@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import UserContext from '../contexts/UserContext';
-import fetchWithToken from '../services/apiFunctions';
+import fetchWithToken, { fetchWithoutToken } from '../services/apiFunctions';
 import AddChildModal from '../components/AddChildModal';
 import ManageChildrenModal from '../components/ManageChildrenModal';
 import SendEmailModal from '../components/EmailModal';
@@ -10,6 +10,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './CalendarPage.css';
 
 const localizer = momentLocalizer(moment);
+
+const setEventsHelper = (data) => data?.map(event => ({...event,
+  start: new Date(event.date),
+  end: new Date(event.date),
+  childrenNames: event.childNames || []
+}))
 
 const CalendarPage = () => {
   const [events, setEvents] = useState([]);
@@ -23,24 +29,37 @@ const CalendarPage = () => {
 
   useEffect(() => {
     fetchEvents();
-  }, []);
+  }, [isAuthenticated]);
   
   // this will fetch any events children and the date as well in database)
   const fetchEvents = async () => {
     setIsLoading(true);
-    const response = await fetchWithToken(`${process.env.REACT_APP_API_URL}/calendar/events`);
-    // if response is ok this should set the calendar events(buy buttons)
-    if (response.ok) {
-      const data = await response.json();
-      console.log("Fetched Events:", data);
-      setEvents(data.map(event => ({...event,
-        start: new Date(event.date),
-        end: new Date(event.date),
-        childrenNames: event.childNames || []
-      })));
-    } else {
-      console.error('Error fetching events');
+
+    if (isAuthenticated) {
+      const response = await fetchWithToken(`${process.env.REACT_APP_API_URL}/calendar/events`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Fetched Events:", data);
+        setEvents(setEventsHelper(data));
+      } else {
+        console.error('Error fetching events');
+      }
     }
+
+    if (!isAuthenticated) {
+      const response = await fetchWithoutToken(`${process.env.REACT_APP_API_URL}/calendar/eventsAvailable`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Fetched Events:", data);
+        setEvents(setEventsHelper(data));
+      } else {
+        console.error('Error fetching events');
+      }
+    }
+    // if response is ok this should set the calendar events(buy buttons)
+
     setIsLoading(false);
   };
 
@@ -95,6 +114,8 @@ const CalendarPage = () => {
       </div>
     );
   };
+
+  console.log('events >>>>>', { events })
 
   return (
     <div>

@@ -45,6 +45,24 @@ const fetchWithToken = async (url, options = {}) => {
   return response;
 };
 
+// reusable function for making API requests without authentication tokens
+export const fetchWithoutToken = async (url, options = {}) => {
+  // retrieves our stored token from local storage
+  // fetch header authorisation
+  try {
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        ...options.headers,
+      },
+    });
+  
+    return response;  
+  } catch(e) {
+    console.error(`Failed to fetch data: ${e}`)
+  }
+};
+
 // api function to add children to the calendar
 export const addCalendarChild = async (date, childName) => {
   return await fetchWithToken(`${process.env.REACT_APP_API_URL}/calendar/manageChildNames`, {

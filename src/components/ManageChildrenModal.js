@@ -42,7 +42,7 @@ const ManageChildrenModal = ({ isLoading, isOpen, onRequestClose, childrenNames,
       {error && <div className="manage-error-message">{error}</div>}
       {successMessage && <div className="manage-success-message">{successMessage}</div>}
       <ul className="child-name-list">
-        {childrenNames.map((name, index) => (
+        {childrenNames?.map((name, index) => (
           <li key={index} className="child-name-individual">
             {name}
             <button className="manage-remove-button" onClick={() => handleRemove(name)} disabled={isLoading}>{isLoading ? <div className="loader" /> : "Remove"}</button>
