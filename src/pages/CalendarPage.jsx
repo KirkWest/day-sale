@@ -23,7 +23,6 @@ const CalendarPage = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isAddChildModalOpen, setIsAddChildModalOpen] = useState(false);
   const [isManageChildrenModalOpen, setIsManageChildrenModalOpen] = useState(false);
-  // const [isSendEmailModalOpen, setIsSendEmailModalOpen] = useState(false);
   const { isAuthenticated } = useContext(UserContext);
 
   useEffect(() => {
