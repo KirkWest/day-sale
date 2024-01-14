@@ -5,7 +5,6 @@ import UserContext from '../contexts/UserContext';
 import fetchWithToken, { fetchWithoutToken } from '../services/apiFunctions';
 import AddChildModal from '../components/AddChildModal';
 import ManageChildrenModal from '../components/ManageChildrenModal';
-import SendEmailModal from '../components/EmailModal';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './CalendarPage.css';
 
@@ -24,7 +23,7 @@ const CalendarPage = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isAddChildModalOpen, setIsAddChildModalOpen] = useState(false);
   const [isManageChildrenModalOpen, setIsManageChildrenModalOpen] = useState(false);
-  const [isSendEmailModalOpen, setIsSendEmailModalOpen] = useState(false);
+  // const [isSendEmailModalOpen, setIsSendEmailModalOpen] = useState(false);
   const { isAuthenticated } = useContext(UserContext);
 
   useEffect(() => {
@@ -59,7 +58,6 @@ const CalendarPage = () => {
       }
     }
     // if response is ok this should set the calendar events(buy buttons)
-
     setIsLoading(false);
   };
 
@@ -67,21 +65,21 @@ const CalendarPage = () => {
     await fetchEvents(); // this will refresh the calendar events upon updating in modals
   }
 
+  useEffect(() => {
+    const eventForDate = events.find(event => moment(event.start).isSame(selectedDate, "day"));
+    setSelectedEvent(eventForDate); // 
+  }, [events, selectedDate])
+
   // this will handle the sell button click with authentication
   const handleSellClick = (date) => {
     setSelectedDate(date);
     if (isAuthenticated) {
       setIsAddChildModalOpen(true);
     } else {
-      setIsSendEmailModalOpen(true);
+      window.location.href = generateMailToLink(date, 'sell');
     }
   };
-
-  useEffect(() => {
-    const eventForDate = events.find(event => moment(event.start).isSame(selectedDate, "day"));
-    setSelectedEvent(eventForDate); // 
-  }, [events, selectedDate])
-
+  
   // handles our buy button click, if auth eventForDate will find corrosponding dates in DB
   const handleBuyClick = (date) => {
     setSelectedDate(date);
@@ -90,9 +88,18 @@ const CalendarPage = () => {
       setSelectedEvent(eventForDate); // stores our retrieved data
       setIsManageChildrenModalOpen(true);
     } else {
-      setIsSendEmailModalOpen(true);
+      window.location.href = generateMailToLink(date, 'buy');
     }
   };
+
+  // using mailto for the email system for guests
+  const generateMailToLink = (date, actionType) => {
+    const formattedDate = moment(date).format('YYYY-MM-DD');
+    const subject = actionType === 'buy' ? `Buy Request for ${formattedDate}` : `Sell Request for ${formattedDate}`;
+    const mailBody = `Hello,\n\nI would like to ${actionType} this date ${formattedDate}. Please fill in any additional information you want.`;
+    return `mailto:admin@adamstownchildren.org.au?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailBody)}`;
+  };
+
 
   // this function checks for the date in database
   const hasDateInDatabase = (date) => {
@@ -114,8 +121,6 @@ const CalendarPage = () => {
       </div>
     );
   };
-
-  console.log('events >>>>>', { events })
 
   return (
     <div>
@@ -147,19 +152,8 @@ const CalendarPage = () => {
         date={selectedDate}
         refreshEvents={refreshEvents} // passing refreshEvents again
       />
-
-      <SendEmailModal
-        isOpen={isSendEmailModalOpen}
-        onRequestClose={() => setIsSendEmailModalOpen(false)}
-        date={selectedDate}
-      />
     </div>
   );
 };
 
 export default CalendarPage;
-
-
-// finish off manageChildrenModal render, test out fetch and manage of children with 
-// buy button and also adding children with sell button. Finish setting up the Email
-// system and test.
