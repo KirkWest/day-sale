@@ -4,6 +4,10 @@
 
  The function of the site is to supply the user with a calendar page that is populated with sell buttons and buy buttons if applicable. A guest can click on a sell day to email the Admin about a wish to sell that day, or if a buy button is clicked it will allow them to email the admin about their wish to buy that day. Admin will use these same buttons to open modals to add children to a days if it was a sell button or to manipulate the database data to add or remove children from days that have a buy button. Removing the last child from a day will also remove the button from the calendar page.
 
+## URL link to deployed site
+
+[daysale](https://acelp-daysale-8a5708430aac.herokuapp.com/)
+
 ## List of dependencies
 
     "@babel/plugin-proposal-private-property-in-object": "^7.21.0",
