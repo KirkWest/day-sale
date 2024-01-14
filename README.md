@@ -1,4 +1,84 @@
-# Getting Started with Create React App
+# DaySale Front-end
+
+ The front-end of this application works in tandem with the [DaySaleBackend](https://github.com/KirkWest/DaySaleBackend) and controls the user interface components of the app using the MERN stack in particular React.
+
+ The function of the site is to supply the user with a calendar page that is populated with sell buttons and buy buttons if applicable. A guest can click on a sell day to email the Admin about a wish to sell that day, or if a buy button is clicked it will allow them to email the admin about their wish to buy that day. Admin will use these same buttons to open modals to add children to a days if it was a sell button or to manipulate the database data to add or remove children from days that have a buy button. Removing the last child from a day will also remove the button from the calendar page.
+
+## List of dependencies
+
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.0",
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-brands-svg-icons": "^6.5.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "bootstrap": "^5.3.2",
+    "js-cookie": "^3.0.5",
+    "moment": "^2.30.1",
+    "react": "^18.2.0",
+    "react-big-calendar": "^1.8.5",
+    "react-bootstrap": "^2.9.2",
+    "react-dom": "^18.2.0",
+    "react-modal": "^3.16.1",
+    "react-router-dom": "^6.21.1",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^2.1.4"
+
+## Components
+
+### Footer
+
+contains a simple footer for the home page only with links to the users facebook, instagram, and website.
+
+### Header
+
+The header contains the logo for ACELP as well as a link to the calendar page and a login button.
+
+### LoginModal
+
+This controls the modal to login as an admin user. Utilises react modal as well as custom styling.
+
+### AddChildModal
+
+This controls the modal that pops up when wanting to add a child to the database in connection with that day. It calls the Add child function contained in the apiFunctions.js. Utilises react modal as well as custom styling.
+
+### ManageChildrenModal
+
+This controls the modal that opens when an admin clicks on the buy button, it shows a list of the children from the database on that day with a remove button next to their names to remove them as well as a section unneath to add a name in as well if the admin wanted, this calls the addCalendarChild and removeCalendarChild functions from the apiFunctions.js. Utilises react modal as well as custom styling.
+
+## Contexts
+
+### GlobalStateContext
+
+Contains logic to allow the login modal to open on all pages.
+
+### UserContext
+
+Contains our user context, such as the login logout functions. It has two useEffects one to handle opeing the loginmodal after a token expires as well as one to check if there is an existing auth token.
+
+## Pages
+
+### HomePage
+
+Simple holds as the landing page for the app, contains the header and footer as well as a brief welcome message.
+
+### CalendarPage
+
+The calendar page uses React-big-calendar to format the basics of the calendar, then using functions "CustomDayCellSell" and bootstrap to create the buy and sell buttons. Using a fetchEvents function it checks if there are any dates/children saved in the database, if there are it will add a buy button to any of those days. We have a refreshEvents function to update the modal if there are any changes made. Handle buy and sell click logic both will first check if the user is authenticated, if not they both open emails using "mailto" from the users end and self populates the date and the type of button that was clicked into the subject and into the body of email, it also adds ACELPs email automatically. Uses moment, react-big-calendar, moment, and bootstrap along with custom styling.
+
+## services
+
+### apiFunctions
+
+FetchWithToken and storing the token in session storage, as well as removing the token once it expries and refreshing it.
+FetchWithoutToken operates similar but can run a fetch without the authentication, this was necessary to populate the buy buttons.
+The addCalendarChild acts as the api function to add a child to the calendar through the manageChildNames functions in the backend.
+TheremoveCalendarChild is the same also calling this manageChildNames function bit with an action of remove instead of add
+
+## Reacts auto readne below
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

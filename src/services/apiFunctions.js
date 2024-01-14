@@ -47,7 +47,6 @@ const fetchWithToken = async (url, options = {}) => {
 
 // reusable function for making API requests without authentication tokens
 export const fetchWithoutToken = async (url, options = {}) => {
-  // retrieves our stored token from local storage
   // fetch header authorisation
   try {
     const response = await fetch(url, {
@@ -58,8 +57,8 @@ export const fetchWithoutToken = async (url, options = {}) => {
     });
   
     return response;  
-  } catch(e) {
-    console.error(`Failed to fetch data: ${e}`)
+  } catch(error) {
+    console.error(`Failed to fetch data: ${error}`)
   }
 };
 
